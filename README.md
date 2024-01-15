@@ -1,3 +1,5 @@
+![Audit Wizard Find the Bug Challenge](https://app.auditwizard.io/static/media/fullLogoDark.19022120.png)
+
 # Audit Wizard - Find the Bug Challenge #1
 
 Welcome to Audit Wizard's first immersive find-the-bug challenge for auditors! Hosted fully on the **Audit Wizard** platform, this challenge offers an exciting opportunity to showcase your auditing skills.
