@@ -80,7 +80,7 @@ contract NFTStakingPlatform is ReentrancyGuard {
     function liquidateBorrowedNFT(address nftContract, uint256 tokenId) external nonReentrant {
         require(NFTOwners[nftContract][tokenId] == msg.sender, "You are not the owner of this NFT");
         require(borrowTimestamps[nftContract][tokenId] > 0, "NFT is not currently borrowed");
-        uint256 duration = block.timestamp - borrowTimestamp;
+        uint256 duration = block.timestamp - borrowTimestamps[nftContract][tokenId];
         require(duration >= 100 hours, "Borrow duration has not elapsed, collateral remains");
 
         uint256 collateralAmount = collateralAmounts[nftContract][tokenId];
