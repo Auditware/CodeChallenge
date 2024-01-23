@@ -12,6 +12,7 @@ contract NFTStakingPlatform is ReentrancyGuard {
     event NFTUnstaked(address indexed nftOwner, address nftContract, uint256 tokenId);
     event NFTBorrowed(address indexed borrower, address nftContract, uint256 tokenId);
     event NFTReturned(address indexed borrower, address nftContract, uint256 tokenId);
+    event NFTLiquidated(address indexed nftOwner, address nftContract, uint256 tokenId);
 
     function stakeNFT(address nftContract, uint256 tokenId, uint256 collateralAmount) external nonReentrant {
         require(collateralAmount > 0, "CollateralAmount must be non-zero");
@@ -52,12 +53,15 @@ contract NFTStakingPlatform is ReentrancyGuard {
         require(collateralAmount > 0, "No matching NFT staked");
         require(borrowTimestamp > 0, "NFT is not currently borrowed");
 
+        IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
+
         // Transfer fee to the NFT owner and return the rest of the collateral to the borrower
         uint256 fee = calculateFee(borrowTimestamp, collateralAmount);
         uint256 remaining = collateralAmount - fee;
         address NFTOwner = NFTOwners[nftContract][tokenId];
         payable(NFTOwner).transfer(fee);
         payable(msg.sender).transfer(remaining);
+        borrowTimestamps[nftContract][tokenId] = 0;
 
         emit NFTReturned(msg.sender, nftContract, tokenId);
     }
@@ -65,9 +69,27 @@ contract NFTStakingPlatform is ReentrancyGuard {
     function calculateFee(uint256 borrowTimestamp, uint256 collateralAmount) internal view returns (uint256) {
         // Calculate fee based on borrowing duration
         uint256 duration = block.timestamp - borrowTimestamp;
+        require(duration < 100 hours, "Borrow duration has elapsed, no collateral remains");
+
         uint256 feeRate = 1; // 1% per hour
         uint256 fee = (collateralAmount * feeRate * duration) / (1 hours * 100);
 
         return fee;
+    }
+
+    function liquidateBorrowedNFT(address nftContract, uint256 tokenId) external nonReentrant {
+        require(NFTOwners[nftContract][tokenId] == msg.sender, "You are not the owner of this NFT");
+        require(borrowTimestamps[nftContract][tokenId] > 0, "NFT is not currently borrowed");
+        uint256 duration = block.timestamp - borrowTimestamp;
+        require(duration >= 100 hours, "Borrow duration has not elapsed, collateral remains");
+
+        uint256 collateralAmount = collateralAmounts[nftContract][tokenId];
+        collateralAmounts[nftContract][tokenId] = 0;
+        NFTOwners[nftContract][tokenId] = address(0);
+        borrowTimestamps[nftContract][tokenId] = 0;
+
+        payable(msg.sender).transfer(collateralAmount);
+
+        emit NFTLiquidated(msg.sender, nftContract, tokenId);
     }
 }
