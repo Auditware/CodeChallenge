@@ -53,7 +53,7 @@ contract NFTStakingPlatform is ReentrancyGuard {
         require(collateralAmount > 0, "No matching NFT staked");
         require(borrowTimestamp > 0, "NFT is not currently borrowed");
 
-        IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
+        IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
 
         // Transfer fee to the NFT owner and return the rest of the collateral to the borrower
         uint256 fee = calculateFee(borrowTimestamp, collateralAmount);
