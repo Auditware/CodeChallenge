@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {Test, console} from "forge-std/Test.sol";
-import {NFTStakingPlatform} from "../src/NFTStakingPlatform.sol";
+import {NFTStakingPlatform} from "../src/challenge_1.sol";
 
 contract FakeERC721 is ERC721 {
 	constructor(
