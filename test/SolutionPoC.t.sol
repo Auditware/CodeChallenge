@@ -48,7 +48,7 @@ contract NFTStakingPlatformTest is Test {
 		realERC721 = new RealERC721("real", "real");
 	}
 
-	function test_exploit2() external {
+	function test_exploit() external {
         vm.warp(10);
 		address alice = makeAddr("alice");
 		vm.startPrank(alice);
