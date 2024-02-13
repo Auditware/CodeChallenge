@@ -55,26 +55,11 @@ contract NFTStakingPlatform is ReentrancyGuard {
 
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
-        // Transfer fee to the NFT owner and return the rest of the collateral to the borrower
-        uint256 fee = calculateFee(borrowTimestamp, collateralAmount);
-        uint256 remaining = collateralAmount - fee;
-        address NFTOwner = NFTOwners[nftContract][tokenId];
-        payable(NFTOwner).transfer(fee);
-        payable(msg.sender).transfer(remaining);
+        // Return the rest of the collateral to the borrower
+        payable(msg.sender).transfer(collateralAmount);
         borrowTimestamps[nftContract][tokenId] = 0;
 
         emit NFTReturned(msg.sender, nftContract, tokenId);
-    }
-
-    function calculateFee(uint256 borrowTimestamp, uint256 collateralAmount) internal view returns (uint256) {
-        // Calculate fee based on borrowing duration
-        uint256 duration = block.timestamp - borrowTimestamp;
-        require(duration < 100 hours, "Borrow duration has elapsed, no collateral remains");
-
-        uint256 feeRate = 1; // 1% per hour
-        uint256 fee = (collateralAmount * feeRate * duration) / (1 hours * 100);
-
-        return fee;
     }
 
     function liquidateBorrowedNFT(address nftContract, uint256 tokenId) external nonReentrant {
