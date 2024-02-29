@@ -21,6 +21,7 @@ contract Lottery is ReentrancyGuard {
 
     event LotteryEntry(address player, uint256 amount, uint256 tickets);
     event RewardsDistributed(address[] winners, uint256 totalReward);
+    mapping(address => uint256) public rewards;
 
     constructor() {
         lotteryStartTime = block.timestamp;
@@ -55,14 +56,14 @@ contract Lottery is ReentrancyGuard {
 
         address[] memory winners = new address[](winnersCount);
 
+        // NOTE - issues related to large for loop are out of scope for this challenge
         for (uint256 i = 0; i < winnersCount; i++) {
-
-            // This loop represents the distribution logic and needs proper random selection mechanism
-            // Placeholder for winner selection - Replace with Chainlink VRF or other method
+            // NOTE - although this psuedo randomness is potenitally manipulable,
+            // assume it is secure for the purpose of this challenge.
             uint256 winningTicket = uint256(keccak256(abi.encodePacked(block.timestamp, i))) % totalTickets + 1;
             address winner = selectWinner(winningTicket);
             winners[i] = winner;
-            payable(winner).transfer(rewardPerWinner);
+            rewards[winner] += rewardPerWinner;
         }
         
         emit RewardsDistributed(winners, rewardPool);
@@ -70,10 +71,19 @@ contract Lottery is ReentrancyGuard {
         resetForNextRound();
     }
 
-    function selectWinner(uint256 winningTicket) private view returns (address) {
+    function withdrawReward() public nonReentrant {
+        uint256 amount = rewards[msg.sender];
+        require(amount > 0, "No rewards to withdraw");
 
+        rewards[msg.sender] = 0;
+        (bool success, ) = payable(msg.sender).call{value: amount}("");
+        require(success, "Withdrawal failed");
+    }
+
+    function selectWinner(uint256 winningTicket) private view returns (address) {
         uint256 sum = 0;
 
+        // NOTE - issues related to large for loop are out of scope for this challenge
         for (uint256 i = 0; i < participants.length; i++) {
             address participant = participants[i];
             Player storage player = playerInfo[participant];
@@ -85,10 +95,9 @@ contract Lottery is ReentrancyGuard {
         }
         revert("Winner not found.");
     }
-    // NOTE - although this psuedo randomness is potenitally manipulable,
-    // assume it is secure for the purpose of this challenge.
-    function resetForNextRound() private {
 
+    function resetForNextRound() private {
+        // NOTE - issues related to large for loop are out of scope for this challenge
         for (uint256 i = 0; i < participants.length; i++) {
             delete playerInfo[participants[i]]; // Clear participant info for the new round
         }
