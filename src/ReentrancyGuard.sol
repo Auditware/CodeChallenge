@@ -64,7 +64,6 @@ abstract contract ReentrancyGuard {
             revert ReentrancyGuardReentrantCall();
         }
 
-        // Any calls to nonReentrant after this point will fail
         _status = NOT_ENTERED;
     }
 

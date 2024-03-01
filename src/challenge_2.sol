@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../ReentrancyGuard.sol";
+import "./ReentrancyGuard.sol";
 
 contract Lottery is ReentrancyGuard {
 
