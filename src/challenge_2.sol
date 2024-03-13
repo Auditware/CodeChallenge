@@ -71,13 +71,15 @@ contract Lottery is ReentrancyGuard {
         resetForNextRound();
     }
 
-    function withdrawReward() public nonReentrant {
+    function withdrawReward() public {
         uint256 amount = rewards[msg.sender];
         require(amount > 0, "No rewards to withdraw");
 
-        rewards[msg.sender] = 0;
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Withdrawal failed");
+
+        // Now updating the state after making the external call.
+        rewards[msg.sender] = 0;
     }
 
     function selectWinner(uint256 winningTicket) private view returns (address) {
