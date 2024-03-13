@@ -71,7 +71,7 @@ contract Lottery is ReentrancyGuard {
         resetForNextRound();
     }
 
-    function withdrawReward() public {
+    function withdrawReward() public nonReentrant {
         uint256 amount = rewards[msg.sender];
         require(amount > 0, "No rewards to withdraw");
 
