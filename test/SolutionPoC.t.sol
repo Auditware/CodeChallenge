@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {Test, console2} from "forge-std/Test.sol";
-import {Lottery} from "./challenge_2.sol";
+import {Lottery} from "../src/challenge_2.sol";
 
 contract LotteryTest is Test {
     Lottery private lottery;
