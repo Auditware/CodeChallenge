@@ -6,7 +6,7 @@ Correctly finding the bug will unlock a commemorative badge in Audit Wizard. The
 
 ---
 
-This challenge by [Tomer](https://twitter.com/forefy), the creator of [eburger](https://github.com/forefy/eburger) includes a simple token vault. Users can deposit funds to the vault, and after enough time they can withdraw funds and receive yields based on several factors.
+This challenge by [Tomer](https://twitter.com/forefy), the creator of [eburger](https://github.com/forefy/eburger), includes a simple token vault. Users can deposit funds to the vault, and after enough time they can withdraw funds and receive yields based on several factors.
 
 It's been rumored that a blackhat warlock can manipulate this vault to get rich. Locate the vulnerability that allows the contract to be manipulated to stop the warlocks in their tracks.
 
