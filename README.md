@@ -12,4 +12,4 @@ It's been rumored that a blackhat warlock can manipulate this vault to get rich.
 
 Happy hunting!
 
-![img](https://i.ibb.co/bBzMmNt/21239f45d36c1497ac703c2a1e27da37.png)
+![img](https://i.ibb.co/nLqkyN8/68f2cd51ab03f55c152da6798b11b94e.png)
