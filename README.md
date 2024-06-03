@@ -10,4 +10,4 @@ This challenge by [Tomer](https://twitter.com/forefy), the creator of [eburger](
 
 Happy hunting!
 
-![img](https://i.ibb.co/nLqkyN8/68f2cd51ab03f55c152da6798b11b94e.png)
+![img](https://i.ibb.co/xf24Gr1/c526f32f9f1a14485b49db446df5512a.png)
