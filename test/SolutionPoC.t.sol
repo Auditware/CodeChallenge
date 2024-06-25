@@ -16,7 +16,9 @@ contract AttackTest is Test {
         user = address(2);
         token = new Token();
         cToken = new CErc20Clone(address(token));
+    }
 
+    function testAttack() public {
         vm.label(attacker, "Attacker");
         vm.label(user, "User");
         vm.deal(attacker, 1 ether);
@@ -32,9 +34,7 @@ contract AttackTest is Test {
         vm.startPrank(user);
         token.approve(address(cToken), 5000);
         vm.stopPrank();
-    }
-
-    function testAttack() public {
+         
         console2.log(
             "[STATE]                Underlying balance of CToken",
             token.balanceOf(address(cToken))
