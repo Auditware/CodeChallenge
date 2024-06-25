@@ -11,14 +11,12 @@ contract AttackTest is Test {
     address attacker;
     address user;
 
-    function setUp() public {
+    function testAttack() public {
         attacker = address(1);
         user = address(2);
         token = new Token();
         cToken = new CErc20Clone(address(token));
-    }
-
-    function testAttack() public {
+        
         vm.label(attacker, "Attacker");
         vm.label(user, "User");
         vm.deal(attacker, 1 ether);
