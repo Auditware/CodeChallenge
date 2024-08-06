@@ -22,6 +22,6 @@ Correctly finding the 3 issues will unlock a commemorative badge in Audit Wizard
 
 They have an [educational repository](https://github.com/ZealynxSecurity/Zealynx) where they are organizing all types of resources, notes, and videos to help you continue learning about these technologies, as well as the [YouTube channel](https://youtube.com/@theblockchainer?si=1ua4ZEkbap0n1oHs) where you can learn a lot about fuzzing and various tools.
 
-<img width="900" alt="image" src="image/zealynx.png">
+![img](https://i.ibb.co/xMLG701/zealynx-1.jpg)
 
 ---
